@@ -56,6 +56,8 @@ def pick_classifier(arg):
         return create_decision_tree
     elif arg == 'svm':
         return create_svm
+    else:
+        return None
 
 
 def main():
@@ -65,6 +67,9 @@ def main():
     trains = []
     create_classifier = pick_classifier(sys.argv[1]) if len(sys.argv) >= 2 \
         else create_random_forest
+    if create_classifier is None:
+        print("'{}': unknown algorithm".format(sys.argv[1]), file=sys.stderr)
+        sys.exit(1)
     for _ in range(10):
         classifier = create_classifier()
         X_test, y_test, X_train, y_train = train(classifier, dataframe)
